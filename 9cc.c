@@ -203,14 +203,14 @@ Node *expr()
 
 Node *mul()
 {
-    Node *node = primary();
+    Node *node = unary();
 
     for (;;)
     {
         if (consume('*'))
-            node = new_binary(ND_MUL, node, primary());
+            node = new_binary(ND_MUL, node, unary());
         else if (consume('/'))
-            node = new_binary(ND_DIV, node, primary());
+            node = new_binary(ND_DIV, node, unary());
         else
             return node;
     }
@@ -220,9 +220,9 @@ Node *mul()
 Node *unary()
 {
     if (consume('+'))
-        return primary();
+        return unary();
     if (consume('-'))
-        return new_node(ND_SUB, new_node_num(0), primary());
+        return new_binary(ND_SUB, new_num(0), unary());
     return primary();
 }
 
